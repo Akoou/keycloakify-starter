@@ -16,6 +16,25 @@ yarn install # Or use an other package manager, just be sure to delete the yarn.
 
 [Documentation](https://docs.keycloakify.dev/testing-your-theme)
 
+# Enable passkey sign-in
+
+This theme already renders Keycloak's WebAuthn/passkey authentication pages through
+`DefaultPage`. Enable the feature in the Keycloak realm that uses this theme:
+
+1. Go to **Authentication** > **Flows** and copy the **Browser** flow.
+2. In the copied flow, add the **Passkeys Conditional Authenticator** execution
+    to offer passkey sign-in next to the password form. Add the **WebAuthn
+    Passwordless Authenticator** execution to complete passwordless sign-in
+    (or use **WebAuthn Authenticator** when passkeys are a second factor).
+3. Set the appropriate execution requirement, then bind the copied flow as the
+    realm's **Browser Flow** under **Authentication** > **Bindings**.
+4. Configure **WebAuthn Passwordless Policy** under **Realm settings** >
+    **Authentication**. For passkeys, require a user-verifying authenticator and
+    use a HTTPS realm URL in production.
+
+When the configured flow reaches the passkey execution, Keycloak serves the
+`webauthn-authenticate` page and this theme invokes the browser's passkey prompt.
+
 # How to customize the theme
 
 [Documentation](https://docs.keycloakify.dev/css-customization)
